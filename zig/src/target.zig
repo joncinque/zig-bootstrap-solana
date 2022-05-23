@@ -256,6 +256,7 @@ pub fn hasLlvmSupport(target: std.Target, ofmt: std.Target.ObjectFormat) bool {
         .avr,
         .bpfel,
         .bpfeb,
+        .sbf,
         .csky,
         .dxil,
         .hexagon,
@@ -339,7 +340,7 @@ pub fn libcProvidesStackProtector(target: std.Target) bool {
 pub fn supportsReturnAddress(target: std.Target) bool {
     return switch (target.cpu.arch) {
         .wasm32, .wasm64 => target.os.tag == .emscripten,
-        .bpfel, .bpfeb => false,
+        .bpfel, .bpfeb, .sbf => false,
         else => true,
     };
 }
@@ -574,6 +575,7 @@ pub fn atomicPtrAlignment(
         .amdgcn,
         .bpfel,
         .bpfeb,
+        .sbf,
         .le64,
         .mips64,
         .mips64el,
