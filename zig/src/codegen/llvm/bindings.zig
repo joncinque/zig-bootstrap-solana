@@ -1442,6 +1442,7 @@ pub const ArchType = enum(c_int) {
     avr,
     bpfel,
     bpfeb,
+    sbf,
     csky,
     dxil,
     hexagon,

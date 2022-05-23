@@ -6816,6 +6816,7 @@ pub fn atomicPtrAlignment(
         .amdgcn,
         .bpfel,
         .bpfeb,
+        .sbf,
         .le64,
         .mips64,
         .mips64el,

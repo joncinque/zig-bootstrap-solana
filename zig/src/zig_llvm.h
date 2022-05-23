@@ -356,6 +356,7 @@ enum ZigLLVM_ArchType {
     ZigLLVM_avr,            // AVR: Atmel AVR microcontroller
     ZigLLVM_bpfel,          // eBPF or extended BPF or 64-bit BPF (little endian)
     ZigLLVM_bpfeb,          // eBPF or extended BPF or 64-bit BPF (big endian)
+    ZigLLVM_sbf,            // Solana dialect of eBPF (little-endian)
     ZigLLVM_csky,           // CSKY: csky
     ZigLLVM_dxil,           // DXIL 32-bit DirectX bytecode
     ZigLLVM_hexagon,        // Hexagon: hexagon

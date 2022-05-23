@@ -6277,7 +6277,7 @@ pub fn initializeLLVMTarget(self: *const Builder, arch: std.Target.Cpu.Arch) voi
             llvm.LLVMInitializeAVRAsmPrinter();
             llvm.LLVMInitializeAVRAsmParser();
         },
-        .bpfel, .bpfeb => {
+        .bpfel, .bpfeb, .sbf => {
             llvm.LLVMInitializeBPFTarget();
             llvm.LLVMInitializeBPFTargetInfo();
             llvm.LLVMInitializeBPFTargetMC();

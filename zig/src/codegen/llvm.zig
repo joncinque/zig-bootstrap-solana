@@ -52,6 +52,7 @@ pub fn targetTriple(allocator: Allocator, target: std.Target) ![]const u8 {
         .avr => "avr",
         .bpfel => "bpfel",
         .bpfeb => "bpfeb",
+        .sbf => "sbf",
         .csky => "csky",
         .dxil => "dxil",
         .hexagon => "hexagon",
