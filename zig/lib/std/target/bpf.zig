@@ -8,6 +8,7 @@ pub const Feature = enum {
     alu32,
     dummy,
     dwarfris,
+    solana,
 };
 
 pub const featureSet = CpuFeature.feature_set_fns(Feature).featureSet;
@@ -32,6 +33,11 @@ pub const all_features = blk: {
     result[@intFromEnum(Feature.dwarfris)] = .{
         .llvm_name = "dwarfris",
         .description = "Disable MCAsmInfo DwarfUsesRelocationsAcrossSections",
+        .dependencies = featureSet(&[_]Feature{}),
+    };
+    result[@enumToInt(Feature.solana)] = .{
+        .llvm_name = "solana",
+        .description = "Enable Solana extensions",
         .dependencies = featureSet(&[_]Feature{}),
     };
     const ti = @typeInfo(Feature);
