@@ -51,6 +51,7 @@ pub fn targetTriple(allocator: Allocator, target: std.Target) ![]const u8 {
         .avr => "avr",
         .bpfel => "bpfel",
         .bpfeb => "bpfeb",
+        .sbf => "sbf",
         .csky => "csky",
         .dxil => "dxil",
         .hexagon => "hexagon",
@@ -11917,7 +11918,7 @@ pub fn initializeLLVMTarget(arch: std.Target.Cpu.Arch) void {
             llvm.LLVMInitializeAVRAsmPrinter();
             llvm.LLVMInitializeAVRAsmParser();
         },
-        .bpfel, .bpfeb => {
+        .bpfel, .bpfeb, .sbf => {
             llvm.LLVMInitializeBPFTarget();
             llvm.LLVMInitializeBPFTargetInfo();
             llvm.LLVMInitializeBPFTargetMC();
