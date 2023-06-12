@@ -1,3 +1,36 @@
+# bootstrap-zig-solana
+
+This repo allows you to build the zig compiler against the Solana fork of LLVM,
+which allows you to build Solana on-chain programs.
+
+## Getting started
+
+Fetch the Solana fork of LLVM, managed as a submodule:
+
+```console
+git submodule update --init --recursive
+```
+
+Build everything for the host machine using `./build`, ie:
+
+```console
+./build x86_64-linux-gnu native
+```
+
+## Known issues
+
+The final step of cross-compiling zig with zig currently fails due to a linking
+error:
+
+```
+error: ld.lld: Unable to find target for this triple (no targets are registered)
+```
+
+Since most people will likely only need the compiler working on their host system,
+the repo is still useful in its current state.
+
+The repo's original README follows:
+
 # bootstrap-zig
 
 The purpose of this project is to start with minimum system dependencies and
