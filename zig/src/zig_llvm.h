@@ -423,8 +423,9 @@ enum ZigLLVM_VendorType {
     ZigLLVM_Mesa,
     ZigLLVM_SUSE,
     ZigLLVM_OpenEmbedded,
+    ZigLLVM_Solana,
 
-    ZigLLVM_LastVendorType = ZigLLVM_OpenEmbedded
+    ZigLLVM_LastVendorType = ZigLLVM_Solana
 };
 
 // synchronize with llvm/include/ADT/Triple.h::OsType
@@ -471,7 +472,8 @@ enum ZigLLVM_OSType {
     ZigLLVM_WASI,       // Experimental WebAssembly OS
     ZigLLVM_Emscripten,
     ZigLLVM_ShaderModel, // DirectX ShaderModel
-    ZigLLVM_LastOSType = ZigLLVM_ShaderModel
+    ZigLLVM_SolanaOS,
+    ZigLLVM_LastOSType = ZigLLVM_SolanaOS
 };
 
 // Synchronize with target.cpp::abi_list

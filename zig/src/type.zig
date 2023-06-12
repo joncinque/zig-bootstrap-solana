@@ -7058,6 +7058,7 @@ pub const CType = enum {
                 .amdil64,
                 .bpfel,
                 .bpfeb,
+                .sbf,
                 .hexagon,
                 .hsail64,
                 .loongarch64,
