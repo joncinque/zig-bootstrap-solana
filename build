@@ -23,7 +23,7 @@ esac
 # First build the libraries for Zig to link against, as well as native `llvm-tblgen`.
 mkdir -p "$ROOTDIR/out/build-llvm-host"
 cd "$ROOTDIR/out/build-llvm-host"
-cmake "$ROOTDIR/llvm" \
+cmake "$ROOTDIR/llvm-project/llvm" \
   -DCMAKE_INSTALL_PREFIX="$ROOTDIR/out/host" \
   -DCMAKE_PREFIX_PATH="$ROOTDIR/out/host" \
   -DCMAKE_BUILD_TYPE=Release \
@@ -132,7 +132,7 @@ $ZIG build-lib \
 # Rebuild LLVM with Zig.
 mkdir -p "$ROOTDIR/out/build-llvm-$TARGET-$MCPU"
 cd "$ROOTDIR/out/build-llvm-$TARGET-$MCPU"
-cmake "$ROOTDIR/llvm" \
+cmake "$ROOTDIR/llvm-project/llvm" \
   -DCMAKE_INSTALL_PREFIX="$ROOTDIR/out/$TARGET-$MCPU" \
   -DCMAKE_PREFIX_PATH="$ROOTDIR/out/$TARGET-$MCPU" \
   -DCMAKE_BUILD_TYPE=Release \
