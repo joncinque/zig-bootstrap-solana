@@ -35,7 +35,7 @@ pub const all_features = blk: {
         .description = "Disable MCAsmInfo DwarfUsesRelocationsAcrossSections",
         .dependencies = featureSet(&[_]Feature{}),
     };
-    result[@enumToInt(Feature.solana)] = .{
+    result[@intFromEnum(Feature.solana)] = .{
         .llvm_name = "solana",
         .description = "Enable Solana extensions",
         .dependencies = featureSet(&[_]Feature{}),

@@ -427,6 +427,7 @@ enum ZigLLVM_VendorType {
     ZigLLVM_AMD,
     ZigLLVM_Mesa,
     ZigLLVM_SUSE,
+    ZigLLVM_Solana,
     ZigLLVM_OpenEmbedded,
 
     ZigLLVM_LastVendorType = ZigLLVM_OpenEmbedded
@@ -475,6 +476,7 @@ enum ZigLLVM_OSType {
     ZigLLVM_Hurd,       // GNU/Hurd
     ZigLLVM_WASI,       // Experimental WebAssembly OS
     ZigLLVM_Emscripten,
+    ZigLLVM_SolanaOS,
     ZigLLVM_ShaderModel, // DirectX ShaderModel
     ZigLLVM_LastOSType = ZigLLVM_ShaderModel
 };

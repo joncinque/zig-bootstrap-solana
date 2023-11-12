@@ -269,6 +269,7 @@ pub fn targetArch(arch_tag: std.Target.Cpu.Arch) llvm.ArchType {
         .avr => .avr,
         .bpfel => .bpfel,
         .bpfeb => .bpfeb,
+        .sbf => .sbf,
         .csky => .csky,
         .dxil => .dxil,
         .hexagon => .hexagon,

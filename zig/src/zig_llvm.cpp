@@ -1532,6 +1532,7 @@ static_assert((Triple::VendorType)ZigLLVM_Myriad == Triple::Myriad, "");
 static_assert((Triple::VendorType)ZigLLVM_AMD == Triple::AMD, "");
 static_assert((Triple::VendorType)ZigLLVM_Mesa == Triple::Mesa, "");
 static_assert((Triple::VendorType)ZigLLVM_SUSE == Triple::SUSE, "");
+static_assert((Triple::VendorType)ZigLLVM_Solana == Triple::Solana, "");
 static_assert((Triple::VendorType)ZigLLVM_OpenEmbedded == Triple::OpenEmbedded, "");
 static_assert((Triple::VendorType)ZigLLVM_LastVendorType == Triple::LastVendorType, "");
 
@@ -1573,6 +1574,8 @@ static_assert((Triple::OSType)ZigLLVM_HermitCore == Triple::HermitCore, "");
 static_assert((Triple::OSType)ZigLLVM_Hurd == Triple::Hurd, "");
 static_assert((Triple::OSType)ZigLLVM_WASI == Triple::WASI, "");
 static_assert((Triple::OSType)ZigLLVM_Emscripten == Triple::Emscripten, "");
+static_assert((Triple::OSType)ZigLLVM_SolanaOS == Triple::SolanaOS, "");
+static_assert((Triple::OSType)ZigLLVM_ShaderModel == Triple::ShaderModel, "");
 static_assert((Triple::OSType)ZigLLVM_LastOSType == Triple::LastOSType, "");
 
 static_assert((Triple::EnvironmentType)ZigLLVM_UnknownEnvironment == Triple::UnknownEnvironment, "");
