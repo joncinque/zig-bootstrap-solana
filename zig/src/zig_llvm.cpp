@@ -80,7 +80,7 @@ static const bool assertions_on = false;
 
 LLVMTargetMachineRef ZigLLVMCreateTargetMachine(LLVMTargetRef T, const char *Triple,
     const char *CPU, const char *Features, LLVMCodeGenOptLevel Level, LLVMRelocMode Reloc,
-    LLVMCodeModel CodeModel, bool function_sections, bool data_sections, ZigLLVMABIType float_abi, 
+    LLVMCodeModel CodeModel, bool function_sections, bool data_sections, ZigLLVMABIType float_abi,
     const char *abi_name)
 {
     std::optional<Reloc::Model> RM;
@@ -649,6 +649,7 @@ static_assert((Triple::VendorType)ZigLLVM_CSR == Triple::CSR, "");
 static_assert((Triple::VendorType)ZigLLVM_AMD == Triple::AMD, "");
 static_assert((Triple::VendorType)ZigLLVM_Mesa == Triple::Mesa, "");
 static_assert((Triple::VendorType)ZigLLVM_SUSE == Triple::SUSE, "");
+static_assert((Triple::VendorType)ZigLLVM_Solana == Triple::Solana, "");
 static_assert((Triple::VendorType)ZigLLVM_OpenEmbedded == Triple::OpenEmbedded, "");
 static_assert((Triple::VendorType)ZigLLVM_LastVendorType == Triple::LastVendorType, "");
 
@@ -689,6 +690,7 @@ static_assert((Triple::OSType)ZigLLVM_HermitCore == Triple::HermitCore, "");
 static_assert((Triple::OSType)ZigLLVM_Hurd == Triple::Hurd, "");
 static_assert((Triple::OSType)ZigLLVM_WASI == Triple::WASI, "");
 static_assert((Triple::OSType)ZigLLVM_Emscripten == Triple::Emscripten, "");
+static_assert((Triple::OSType)ZigLLVM_SolanaOS == Triple::SolanaOS, "");
 static_assert((Triple::OSType)ZigLLVM_ShaderModel == Triple::ShaderModel, "");
 static_assert((Triple::OSType)ZigLLVM_LiteOS == Triple::LiteOS, "");
 static_assert((Triple::OSType)ZigLLVM_Serenity == Triple::Serenity, "");

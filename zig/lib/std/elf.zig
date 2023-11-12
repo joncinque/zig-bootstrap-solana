@@ -1630,6 +1630,9 @@ pub const EM = enum(u16) {
     /// C-SKY
     CSKY = 252,
 
+    /// Solana Bytecode Format
+    SBF = 263,
+
     /// Fujitsu FR-V
     FRV = 0x5441,
 

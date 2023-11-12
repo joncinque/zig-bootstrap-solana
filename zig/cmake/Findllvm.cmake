@@ -63,7 +63,7 @@ if(ZIG_USE_LLVM_CONFIG)
         ERROR_VARIABLE LLVM_CONFIG_ERROR
         ERROR_STRIP_TRAILING_WHITESPACE)
 
-      if (LLVM_CONFIG_ERROR) 
+      if (LLVM_CONFIG_ERROR)
         # Save the error message, in case this is the last llvm-config we find
         if (ZIG_SHARED_LLVM)
           list(APPEND LLVM_CONFIG_ERROR_MESSAGES "LLVM 18.x found at ${LLVM_CONFIG_EXE} does not support linking as a shared library")
@@ -83,7 +83,7 @@ if(ZIG_USE_LLVM_CONFIG)
       OUTPUT_STRIP_TRAILING_WHITESPACE)
     string(REPLACE " " ";" LLVM_TARGETS_BUILT "${LLVM_TARGETS_BUILT_SPACES}")
 
-    set(ZIG_LLVM_REQUIRED_TARGETS "AArch64;AMDGPU;ARM;AVR;BPF;Hexagon;Lanai;Mips;MSP430;NVPTX;PowerPC;RISCV;Sparc;SystemZ;VE;WebAssembly;X86;XCore")
+    set(ZIG_LLVM_REQUIRED_TARGETS "AArch64;AMDGPU;ARM;AVR;BPF;Hexagon;Lanai;Mips;MSP430;NVPTX;PowerPC;RISCV;SBF;Sparc;SystemZ;VE;WebAssembly;X86;XCore")
 
     set(ZIG_LLVM_REQUIRED_TARGETS_ENABLED TRUE)
     foreach(TARGET_NAME IN LISTS ZIG_LLVM_REQUIRED_TARGETS)

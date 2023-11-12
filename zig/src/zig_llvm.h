@@ -39,7 +39,7 @@ enum ZigLLVMABIType {
 
 ZIG_EXTERN_C LLVMTargetMachineRef ZigLLVMCreateTargetMachine(LLVMTargetRef T, const char *Triple,
     const char *CPU, const char *Features, LLVMCodeGenOptLevel Level, LLVMRelocMode Reloc,
-    LLVMCodeModel CodeModel, bool function_sections, bool data_sections, enum ZigLLVMABIType float_abi, 
+    LLVMCodeModel CodeModel, bool function_sections, bool data_sections, enum ZigLLVMABIType float_abi,
     const char *abi_name);
 
 ZIG_EXTERN_C void ZigLLVMSetOptBisectLimit(LLVMContextRef context_ref, int limit);
@@ -208,6 +208,7 @@ enum ZigLLVM_VendorType {
     ZigLLVM_AMD,
     ZigLLVM_Mesa,
     ZigLLVM_SUSE,
+    ZigLLVM_Solana,
     ZigLLVM_OpenEmbedded,
 
     ZigLLVM_LastVendorType = ZigLLVM_OpenEmbedded
@@ -254,6 +255,7 @@ enum ZigLLVM_OSType {
     ZigLLVM_Hurd,       // GNU/Hurd
     ZigLLVM_WASI,       // Experimental WebAssembly OS
     ZigLLVM_Emscripten,
+    ZigLLVM_SolanaOS,
     ZigLLVM_ShaderModel, // DirectX ShaderModel
     ZigLLVM_LiteOS,
     ZigLLVM_Serenity,
