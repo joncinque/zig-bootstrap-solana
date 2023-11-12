@@ -149,6 +149,7 @@ pub extern fn LLVMInitializeAMDGPUTargetInfo() void;
 pub extern fn LLVMInitializeARMTargetInfo() void;
 pub extern fn LLVMInitializeAVRTargetInfo() void;
 pub extern fn LLVMInitializeBPFTargetInfo() void;
+pub extern fn LLVMInitializeSBFTargetInfo() void;
 pub extern fn LLVMInitializeHexagonTargetInfo() void;
 pub extern fn LLVMInitializeLanaiTargetInfo() void;
 pub extern fn LLVMInitializeMipsTargetInfo() void;
@@ -172,6 +173,7 @@ pub extern fn LLVMInitializeAMDGPUTarget() void;
 pub extern fn LLVMInitializeARMTarget() void;
 pub extern fn LLVMInitializeAVRTarget() void;
 pub extern fn LLVMInitializeBPFTarget() void;
+pub extern fn LLVMInitializeSBFTarget() void;
 pub extern fn LLVMInitializeHexagonTarget() void;
 pub extern fn LLVMInitializeLanaiTarget() void;
 pub extern fn LLVMInitializeMipsTarget() void;
@@ -195,6 +197,7 @@ pub extern fn LLVMInitializeAMDGPUTargetMC() void;
 pub extern fn LLVMInitializeARMTargetMC() void;
 pub extern fn LLVMInitializeAVRTargetMC() void;
 pub extern fn LLVMInitializeBPFTargetMC() void;
+pub extern fn LLVMInitializeSBFTargetMC() void;
 pub extern fn LLVMInitializeHexagonTargetMC() void;
 pub extern fn LLVMInitializeLanaiTargetMC() void;
 pub extern fn LLVMInitializeMipsTargetMC() void;
@@ -218,6 +221,7 @@ pub extern fn LLVMInitializeAMDGPUAsmPrinter() void;
 pub extern fn LLVMInitializeARMAsmPrinter() void;
 pub extern fn LLVMInitializeAVRAsmPrinter() void;
 pub extern fn LLVMInitializeBPFAsmPrinter() void;
+pub extern fn LLVMInitializeSBFAsmPrinter() void;
 pub extern fn LLVMInitializeHexagonAsmPrinter() void;
 pub extern fn LLVMInitializeLanaiAsmPrinter() void;
 pub extern fn LLVMInitializeMipsAsmPrinter() void;
@@ -239,6 +243,7 @@ pub extern fn LLVMInitializeAMDGPUAsmParser() void;
 pub extern fn LLVMInitializeARMAsmParser() void;
 pub extern fn LLVMInitializeAVRAsmParser() void;
 pub extern fn LLVMInitializeBPFAsmParser() void;
+pub extern fn LLVMInitializeSBFAsmParser() void;
 pub extern fn LLVMInitializeHexagonAsmParser() void;
 pub extern fn LLVMInitializeLanaiAsmParser() void;
 pub extern fn LLVMInitializeMipsAsmParser() void;
@@ -324,6 +329,7 @@ pub const OSType = enum(c_int) {
     Emscripten,
     ShaderModel,
     LiteOS,
+    SolanaOS,
 };
 
 pub const ArchType = enum(c_int) {

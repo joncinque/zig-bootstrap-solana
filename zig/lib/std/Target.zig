@@ -54,6 +54,7 @@ pub const Os = struct {
         hurd,
         wasi,
         emscripten,
+        solana,
         shadermodel,
         liteos,
         opencl,
@@ -161,6 +162,7 @@ pub const Os = struct {
                 .driverkit,
                 .shadermodel,
                 .liteos,
+                .solana,
                 .uefi,
                 .opencl, // TODO: OpenCL versions
                 .glsl450, // TODO: GLSL versions
@@ -379,6 +381,7 @@ pub const Os = struct {
                 .hurd,
                 .emscripten,
                 .driverkit,
+                .solana,
                 .shadermodel,
                 .liteos,
                 .uefi,
@@ -559,6 +562,7 @@ pub const Os = struct {
             .wasi,
             .emscripten,
             .driverkit,
+            .solana,
             .shadermodel,
             .liteos,
             .uefi,
@@ -587,6 +591,7 @@ pub const msp430 = @import("Target/msp430.zig");
 pub const nvptx = @import("Target/nvptx.zig");
 pub const powerpc = @import("Target/powerpc.zig");
 pub const riscv = @import("Target/riscv.zig");
+pub const sbf = @import("Target/sbf.zig");
 pub const sparc = @import("Target/sparc.zig");
 pub const spirv = @import("Target/spirv.zig");
 pub const s390x = @import("Target/s390x.zig");
@@ -684,6 +689,7 @@ pub const Abi = enum {
             .tvos,
             .watchos,
             .driverkit,
+            .solana,
             .shadermodel,
             .liteos, // TODO: audit this
             .solaris,
@@ -980,6 +986,7 @@ pub const Cpu = struct {
         amdgcn,
         riscv32,
         riscv64,
+        sbf,
         sparc,
         sparc64,
         sparcel,
@@ -1099,7 +1106,7 @@ pub const Cpu = struct {
 
         pub inline fn isBpf(arch: Arch) bool {
             return switch (arch) {
-                .bpfel, .bpfeb => true,
+                .bpfel, .bpfeb, .sbf => true,
                 else => false,
             };
         }
@@ -1136,6 +1143,7 @@ pub const Cpu = struct {
                 .powerpc, .powerpcle => .PPC,
                 .r600 => .NONE,
                 .riscv32 => .RISCV,
+                .sbf => .SBF,
                 .sparc => .SPARC,
                 .sparcel => .SPARC,
                 .tce => .NONE,
@@ -1238,6 +1246,7 @@ pub const Cpu = struct {
                 .amdgcn => .Unknown,
                 .bpfel => .Unknown,
                 .bpfeb => .Unknown,
+                .sbf => .Unknown,
                 .csky => .Unknown,
                 .sparc64 => .Unknown,
                 .s390x => .Unknown,
@@ -1260,6 +1269,7 @@ pub const Cpu = struct {
                 .amdil,
                 .amdil64,
                 .bpfel,
+                .sbf,
                 .csky,
                 .xtensa,
                 .hexagon,
@@ -1353,6 +1363,7 @@ pub const Cpu = struct {
                 .nvptx, .nvptx64 => "nvptx",
                 .wasm32, .wasm64 => "wasm",
                 .spirv32, .spirv64 => "spirv",
+                .sbf => "sbf",
                 else => @tagName(arch),
             };
         }
@@ -1374,6 +1385,7 @@ pub const Cpu = struct {
                 .powerpc, .powerpcle, .powerpc64, .powerpc64le => &powerpc.all_features,
                 .amdgcn => &amdgpu.all_features,
                 .riscv32, .riscv64 => &riscv.all_features,
+                .sbf => &sbf.all_features,
                 .sparc, .sparc64, .sparcel => &sparc.all_features,
                 .spirv32, .spirv64 => &spirv.all_features,
                 .s390x => &s390x.all_features,
@@ -1404,6 +1416,7 @@ pub const Cpu = struct {
                 .powerpc, .powerpcle, .powerpc64, .powerpc64le => comptime allCpusFromDecls(powerpc.cpu),
                 .amdgcn => comptime allCpusFromDecls(amdgpu.cpu),
                 .riscv32, .riscv64 => comptime allCpusFromDecls(riscv.cpu),
+                .sbf => comptime allCpusFromDecls(sbf.cpu),
                 .sparc, .sparc64, .sparcel => comptime allCpusFromDecls(sparc.cpu),
                 .spirv32, .spirv64 => comptime allCpusFromDecls(spirv.cpu),
                 .s390x => comptime allCpusFromDecls(s390x.cpu),
@@ -1418,6 +1431,7 @@ pub const Cpu = struct {
         }
 
         fn allCpusFromDecls(comptime cpus: type) []const *const Cpu.Model {
+            @setEvalBranchQuota(2000);
             const decls = @typeInfo(cpus).Struct.decls;
             var array: [decls.len]*const Cpu.Model = undefined;
             for (decls, 0..) |decl, i| {
@@ -1494,6 +1508,7 @@ pub const Cpu = struct {
                 .amdgcn => &amdgpu.cpu.generic,
                 .riscv32 => &riscv.cpu.generic_rv32,
                 .riscv64 => &riscv.cpu.generic_rv64,
+                .sbf => &sbf.cpu.generic,
                 .spirv32, .spirv64 => &spirv.cpu.generic,
                 .sparc, .sparcel => &sparc.cpu.generic,
                 .sparc64 => &sparc.cpu.v9, // 64-bit SPARC needs v9 as the baseline
@@ -1748,6 +1763,7 @@ pub const DynamicLinker = struct {
                 .wasm64,
                 .bpfel,
                 .bpfeb,
+                .sbf,
                 .nvptx,
                 .nvptx64,
                 .spu_2,
@@ -1836,6 +1852,7 @@ pub const DynamicLinker = struct {
             .hermit,
             .hurd,
             .driverkit,
+            .solana,
             .shadermodel,
             .liteos,
             => none,
@@ -1902,6 +1919,7 @@ pub fn maxIntAlignment(target: Target) u16 {
         .riscv64,
         .bpfel,
         .bpfeb,
+        .sbf,
         .nvptx,
         .nvptx64,
         => 16,
@@ -2003,6 +2021,7 @@ pub fn ptrBitWidth_cpu_abi(cpu: Cpu, abi: Abi) u16 {
         .amdgcn,
         .bpfel,
         .bpfeb,
+        .sbf,
         .sparc64,
         .s390x,
         .ve,
@@ -2040,6 +2059,7 @@ pub fn stackAlignment(target: Target) u16 {
         .aarch64_32,
         .bpfeb,
         .bpfel,
+        .sbf,
         .mips64,
         .mips64el,
         .riscv32,
@@ -2423,6 +2443,15 @@ pub fn c_type_bit_size(target: Target, c_type: CType) u16 {
             .longdouble => return 80,
         },
 
+        .solana => switch (c_type) {
+            .char => return 8,
+            .short, .ushort => return 16,
+            .int, .uint, .float => return 32,
+            .long, .ulong => return target.ptrBitWidth(),
+            .longlong, .ulonglong, .double => return 64,
+            .longdouble => return 64,
+        },
+
         .cloudabi,
         .kfreebsd,
         .lv2,
@@ -2512,6 +2541,7 @@ pub fn c_type_alignment(target: Target, c_type: CType) u16 {
             .amdil64,
             .bpfel,
             .bpfeb,
+            .sbf,
             .hexagon,
             .hsail64,
             .loongarch64,
@@ -2637,6 +2667,7 @@ pub fn c_type_preferred_alignment(target: Target, c_type: CType) u16 {
             .amdil64,
             .bpfel,
             .bpfeb,
+            .sbf,
             .hexagon,
             .hsail64,
             .x86,

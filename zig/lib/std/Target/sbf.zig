@@ -6,11 +6,15 @@ const CpuModel = std.Target.Cpu.Model;
 
 pub const Feature = enum {
     alu32,
+    callx_reg_src,
     dummy,
     dwarfris,
     dynamic_frames,
+    no_lddw,
+    no_neg,
+    pqr_instr,
     reloc_abs64,
-    sdiv,
+    reverse_sub,
     solana,
     static_syscalls,
 };
@@ -29,6 +33,11 @@ pub const all_features = blk: {
         .description = "Enable ALU32 instructions",
         .dependencies = featureSet(&[_]Feature{}),
     };
+    result[@intFromEnum(Feature.callx_reg_src)] = .{
+        .llvm_name = "callx-reg-src",
+        .description = "Encode Callx destination register in the src field",
+        .dependencies = featureSet(&[_]Feature{}),
+    };
     result[@intFromEnum(Feature.dummy)] = .{
         .llvm_name = "dummy",
         .description = "unused feature",
@@ -44,14 +53,29 @@ pub const all_features = blk: {
         .description = "Enable dynamic frames",
         .dependencies = featureSet(&[_]Feature{}),
     };
+    result[@intFromEnum(Feature.no_lddw)] = .{
+        .llvm_name = "no-lddw",
+        .description = "Disable the lddw instruction",
+        .dependencies = featureSet(&[_]Feature{}),
+    };
+    result[@intFromEnum(Feature.no_neg)] = .{
+        .llvm_name = "no-neg",
+        .description = "Disable the neg instruction",
+        .dependencies = featureSet(&[_]Feature{}),
+    };
+    result[@intFromEnum(Feature.pqr_instr)] = .{
+        .llvm_name = "pqr-instr",
+        .description = "Enable the PQR instruction class",
+        .dependencies = featureSet(&[_]Feature{}),
+    };
     result[@intFromEnum(Feature.reloc_abs64)] = .{
         .llvm_name = "reloc-abs64",
         .description = "Fix 64bit data relocations",
         .dependencies = featureSet(&[_]Feature{}),
     };
-    result[@intFromEnum(Feature.sdiv)] = .{
-        .llvm_name = "sdiv",
-        .description = "Enable native BPF_SDIV support",
+    result[@intFromEnum(Feature.reverse_sub)] = .{
+        .llvm_name = "reverse-sub",
+        .description = "Reverse the operands in the 'sub reg, imm' instruction",
         .dependencies = featureSet(&[_]Feature{}),
     };
     result[@intFromEnum(Feature.solana)] = .{
@@ -61,7 +85,7 @@ pub const all_features = blk: {
     };
     result[@intFromEnum(Feature.static_syscalls)] = .{
         .llvm_name = "static-syscalls",
-        .description = "Marker feature used for conditional compilation",
+        .description = "Enable static syscalls",
         .dependencies = featureSet(&[_]Feature{}),
     };
     const ti = @typeInfo(Feature);
@@ -87,9 +111,13 @@ pub const cpu = struct {
         .name = "sbfv2",
         .llvm_name = "sbfv2",
         .features = featureSet(&[_]Feature{
+            .callx_reg_src,
             .dynamic_frames,
+            .no_lddw,
+            .no_neg,
+            .pqr_instr,
             .reloc_abs64,
-            .sdiv,
+            .reverse_sub,
             .solana,
             .static_syscalls,
         }),

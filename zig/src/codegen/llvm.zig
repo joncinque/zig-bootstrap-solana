@@ -149,6 +149,7 @@ pub fn targetTriple(allocator: Allocator, target: std.Target) ![]const u8 {
         .driverkit => "driverkit",
         .shadermodel => "shadermodel",
         .liteos => "liteos",
+        .solana => "solana",
         .opencl,
         .glsl450,
         .vulkan,
@@ -256,6 +257,7 @@ pub fn targetOs(os_tag: std.Target.Os.Tag) llvm.OSType {
         .driverkit => .DriverKit,
         .shadermodel => .ShaderModel,
         .liteos => .LiteOS,
+        .solana => .SolanaOS,
     };
 }
 
@@ -270,6 +272,7 @@ pub fn targetArch(arch_tag: std.Target.Cpu.Arch) llvm.ArchType {
         .avr => .avr,
         .bpfel => .bpfel,
         .bpfeb => .bpfeb,
+        .sbf => .sbf,
         .csky => .csky,
         .dxil => .dxil,
         .hexagon => .hexagon,
@@ -412,7 +415,8 @@ const DataLayoutBuilder = struct {
             if (!info.force_in_data_layout and matches_default and
                 self.target.cpu.arch != .riscv64 and !(self.target.cpu.arch == .aarch64 and
                 (self.target.os.tag == .uefi or self.target.os.tag == .windows)) and
-                self.target.cpu.arch != .bpfeb and self.target.cpu.arch != .bpfel) continue;
+                self.target.cpu.arch != .bpfeb and self.target.cpu.arch != .bpfel and
+                self.target.cpu.arch != .sbf) continue;
             try writer.writeAll("-p");
             if (info.llvm != .default) try writer.print("{d}", .{@intFromEnum(info.llvm)});
             try writer.print(":{d}:{d}", .{ size, abi });
@@ -500,6 +504,7 @@ const DataLayoutBuilder = struct {
             .amdgcn,
             .bpfeb,
             .bpfel,
+            .sbf,
             .mips64,
             .mips64el,
             .powerpc64,
@@ -618,6 +623,7 @@ const DataLayoutBuilder = struct {
                     },
                     .bpfeb,
                     .bpfel,
+                    .sbf,
                     .nvptx,
                     .nvptx64,
                     .riscv64,
@@ -11712,12 +11718,19 @@ pub fn initializeLLVMTarget(arch: std.Target.Cpu.Arch) void {
             llvm.LLVMInitializeAVRAsmPrinter();
             llvm.LLVMInitializeAVRAsmParser();
         },
-        .bpfel, .bpfeb, .sbf => {
+        .bpfel, .bpfeb => {
             llvm.LLVMInitializeBPFTarget();
             llvm.LLVMInitializeBPFTargetInfo();
             llvm.LLVMInitializeBPFTargetMC();
             llvm.LLVMInitializeBPFAsmPrinter();
             llvm.LLVMInitializeBPFAsmParser();
+        },
+        .sbf => {
+            llvm.LLVMInitializeSBFTarget();
+            llvm.LLVMInitializeSBFTargetInfo();
+            llvm.LLVMInitializeSBFTargetMC();
+            llvm.LLVMInitializeSBFAsmPrinter();
+            llvm.LLVMInitializeSBFAsmParser();
         },
         .hexagon => {
             llvm.LLVMInitializeHexagonTarget();

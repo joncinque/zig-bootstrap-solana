@@ -903,6 +903,11 @@ const llvm_targets = [_]LlvmTarget{
         },
     },
     .{
+        .zig_name = "sbf",
+        .llvm_name = "SBF",
+        .td_name = "SBF.td",
+    },
+    .{
         .zig_name = "sparc",
         .llvm_name = "Sparc",
         .td_name = "Sparc.td",
