@@ -1,3 +1,59 @@
+# bootstrap-zig-solana
+
+This repo allows you to build the zig compiler against the Solana fork of LLVM,
+which allows you to build Solana on-chain programs.
+
+## Getting started
+
+Fetch the Solana fork of LLVM, managed as a submodule:
+
+```console
+git submodule update --init --recursive
+```
+
+Build everything for the host machine using `./build`, ie:
+
+```console
+./build x86_64-linux-gnu native
+```
+
+## Known issues
+
+### (no targets are registered)
+
+The final step of cross-compiling zig with zig currently fails due to a linking
+error:
+
+```
+error: ld.lld: Unable to find target for this triple (no targets are registered)
+```
+
+Since most people will likely only need the compiler working on their host system,
+the repo is still useful in its current state.
+
+You can use the zig compiler at `./out/host/bin/zig` to build Solana programs.
+
+### -Bsymbolic-functions not supported
+
+When building the LLVM fork of Solana, you may get an error building clang:
+
+```
+error: unsupported linker arg: -Bsymbolic-functions
+make[2]: *** [tools/clang/tools/clang-shlib/CMakeFiles/clang-cpp.dir/build.make:2153: lib/libclang-cpp.so.16] Error 1
+make[1]: *** [CMakeFiles/Makefile2:39627: tools/clang/tools/clang-shlib/CMakeFiles/clang-cpp.dir/all] Error 2
+```
+
+You can simply comment out the lines in
+`llvm-project/clang/tools/clang-shlib/CMakeLists.txt` to instead read:
+
+```
+#if (NOT APPLE AND NOT MINGW)
+#  target_link_options(clang-cpp PRIVATE LINKER:-Bsymbolic-functions)
+#endif()
+```
+
+The repo's original README follows:
+
 # bootstrap-zig
 
 The purpose of this project is to start with minimum system dependencies and
