@@ -579,7 +579,7 @@ pub const VaList = switch (builtin.cpu.arch) {
     },
     .amdgcn => *u8,
     .avr => *anyopaque,
-    .bpfel, .bpfeb => *anyopaque,
+    .bpfel, .bpfeb, .sbf => *anyopaque,
     .hexagon => if (builtin.target.isMusl()) VaListHexagon else *u8,
     .mips, .mipsel, .mips64, .mips64el => *anyopaque,
     .riscv32, .riscv64 => *anyopaque,

@@ -548,6 +548,7 @@ const cpu_targets = struct {
     pub const nvptx = std.Target.nvptx;
     pub const powerpc = std.Target.powerpc;
     pub const riscv = std.Target.riscv;
+    pub const sbf = std.Target.sbf;
     pub const sparc = std.Target.sparc;
     pub const spirv = std.Target.spirv;
     pub const s390x = std.Target.s390x;

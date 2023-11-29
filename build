@@ -4,7 +4,7 @@ set -eu
 
 TARGET="$1" # Example: riscv64-linux-gnu
 MCPU="$2" # Examples: `baseline`, `native`, `generic+v7a`, or `arm1176jzf_s`
-JOBS="-j16"
+JOBS="-j8"
 
 ROOTDIR="$(pwd)"
 ZIG_VERSION="0.11.0"
@@ -39,6 +39,7 @@ cmake "$ROOTDIR/llvm-project/llvm" \
   -DLLVM_ENABLE_BINDINGS=OFF \
   -DLLVM_ENABLE_OCAMLDOC=OFF \
   -DLLVM_ENABLE_Z3_SOLVER=OFF \
+  -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD="BPF;SBF" \
   -DLLVM_TOOL_LLVM_LTO2_BUILD=OFF \
   -DLLVM_TOOL_LLVM_LTO_BUILD=OFF \
   -DLLVM_TOOL_LTO_BUILD=OFF \
@@ -158,6 +159,7 @@ cmake "$ROOTDIR/llvm-project/llvm" \
   -DLLVM_ENABLE_Z3_SOLVER=OFF \
   -DLLVM_ENABLE_ZLIB=FORCE_ON \
   -DLLVM_ENABLE_ZSTD=FORCE_ON \
+  -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD="BPF;SBF" \
   -DLLVM_USE_STATIC_ZSTD=ON \
   -DLLVM_TABLEGEN="$ROOTDIR/out/host/bin/llvm-tblgen" \
   -DLLVM_BUILD_UTILS=OFF \

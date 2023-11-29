@@ -137,6 +137,7 @@ fn updateOsVersionRange(self: *CrossTarget, os: Target.Os) void {
         .glsl450,
         .vulkan,
         .plan9,
+        .solana,
         .other,
         => {
             self.os_version_min = .{ .none = {} };
@@ -734,6 +735,7 @@ fn parseOs(result: *CrossTarget, diags: *ParseOptions.Diagnostics, text: []const
         .plan9,
         .driverkit,
         .shadermodel,
+        .solana,
         .other,
         => return error.InvalidOperatingSystemVersion,
 

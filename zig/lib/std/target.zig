@@ -57,6 +57,7 @@ pub const Target = struct {
             glsl450,
             vulkan,
             plan9,
+            solana,
             other,
 
             pub inline fn isDarwin(tag: Tag) bool {
@@ -264,6 +265,7 @@ pub const Target = struct {
                     .glsl450, // TODO: GLSL versions
                     .vulkan,
                     .plan9,
+                    .solana,
                     .other,
                     => return .{ .none = {} },
 
@@ -442,6 +444,7 @@ pub const Target = struct {
                 .glsl450,
                 .vulkan,
                 .plan9,
+                .solana,
                 .other,
                 => false,
             };
@@ -463,6 +466,7 @@ pub const Target = struct {
     pub const nvptx = @import("target/nvptx.zig");
     pub const powerpc = @import("target/powerpc.zig");
     pub const riscv = @import("target/riscv.zig");
+    pub const sbf = @import("target/sbf.zig");
     pub const sparc = @import("target/sparc.zig");
     pub const spirv = @import("target/spirv.zig");
     pub const s390x = @import("target/s390x.zig");
@@ -565,6 +569,7 @@ pub const Target = struct {
                 .watchos,
                 .driverkit,
                 .shadermodel,
+                .solana,
                 => return .none,
             }
         }
@@ -1029,7 +1034,7 @@ pub const Target = struct {
                     .amdgcn => .AMDGPU,
                     .bpfel => .BPF,
                     .bpfeb => .BPF,
-                    .sbf => .BPF,
+                    .sbf => .SBF,
                     .csky => .CSKY,
                     .sparc64 => .SPARCV9,
                     .s390x => .S390,
@@ -1199,7 +1204,8 @@ pub const Target = struct {
                 return switch (arch) {
                     .arm, .armeb, .thumb, .thumbeb => "arm",
                     .aarch64, .aarch64_be, .aarch64_32 => "aarch64",
-                    .bpfel, .bpfeb, .sbf => "bpf",
+                    .bpfel, .bpfeb => "bpf",
+                    .sbf => "sbf",
                     .loongarch32, .loongarch64 => "loongarch",
                     .mips, .mipsel, .mips64, .mips64el => "mips",
                     .powerpc, .powerpcle, .powerpc64, .powerpc64le => "powerpc",
@@ -1222,7 +1228,7 @@ pub const Target = struct {
                     .aarch64, .aarch64_be, .aarch64_32 => &aarch64.all_features,
                     .arc => &arc.all_features,
                     .avr => &avr.all_features,
-                    .bpfel, .bpfeb, .sbf => &bpf.all_features,
+                    .bpfel, .bpfeb => &bpf.all_features,
                     .csky => &csky.all_features,
                     .hexagon => &hexagon.all_features,
                     .loongarch32, .loongarch64 => &loongarch.all_features,
@@ -1232,6 +1238,7 @@ pub const Target = struct {
                     .powerpc, .powerpcle, .powerpc64, .powerpc64le => &powerpc.all_features,
                     .amdgcn => &amdgpu.all_features,
                     .riscv32, .riscv64 => &riscv.all_features,
+                    .sbf => &sbf.all_features,
                     .sparc, .sparc64, .sparcel => &sparc.all_features,
                     .spirv32, .spirv64 => &spirv.all_features,
                     .s390x => &s390x.all_features,
@@ -1252,7 +1259,7 @@ pub const Target = struct {
                     .arm, .armeb, .thumb, .thumbeb => comptime allCpusFromDecls(arm.cpu),
                     .aarch64, .aarch64_be, .aarch64_32 => comptime allCpusFromDecls(aarch64.cpu),
                     .avr => comptime allCpusFromDecls(avr.cpu),
-                    .bpfel, .bpfeb, .sbf => comptime allCpusFromDecls(bpf.cpu),
+                    .bpfel, .bpfeb => comptime allCpusFromDecls(bpf.cpu),
                     .csky => comptime allCpusFromDecls(csky.cpu),
                     .hexagon => comptime allCpusFromDecls(hexagon.cpu),
                     .loongarch32, .loongarch64 => comptime allCpusFromDecls(loongarch.cpu),
@@ -1262,6 +1269,7 @@ pub const Target = struct {
                     .powerpc, .powerpcle, .powerpc64, .powerpc64le => comptime allCpusFromDecls(powerpc.cpu),
                     .amdgcn => comptime allCpusFromDecls(amdgpu.cpu),
                     .riscv32, .riscv64 => comptime allCpusFromDecls(riscv.cpu),
+                    .sbf => comptime allCpusFromDecls(sbf.cpu),
                     .sparc, .sparc64, .sparcel => comptime allCpusFromDecls(sparc.cpu),
                     .spirv32, .spirv64 => comptime allCpusFromDecls(spirv.cpu),
                     .s390x => comptime allCpusFromDecls(s390x.cpu),
@@ -1276,6 +1284,7 @@ pub const Target = struct {
             }
 
             fn allCpusFromDecls(comptime cpus: type) []const *const Cpu.Model {
+                @setEvalBranchQuota(2000);
                 const decls = @typeInfo(cpus).Struct.decls;
                 var array: [decls.len]*const Cpu.Model = undefined;
                 for (decls, 0..) |decl, i| {
@@ -1312,7 +1321,7 @@ pub const Target = struct {
                     .arm, .armeb, .thumb, .thumbeb => &arm.cpu.generic,
                     .aarch64, .aarch64_be, .aarch64_32 => &aarch64.cpu.generic,
                     .avr => &avr.cpu.avr2,
-                    .bpfel, .bpfeb, .sbf => &bpf.cpu.generic,
+                    .bpfel, .bpfeb => &bpf.cpu.generic,
                     .hexagon => &hexagon.cpu.generic,
                     .loongarch32 => &loongarch.cpu.generic_la32,
                     .loongarch64 => &loongarch.cpu.generic_la64,
@@ -1327,6 +1336,7 @@ pub const Target = struct {
                     .amdgcn => &amdgpu.cpu.generic,
                     .riscv32 => &riscv.cpu.generic_rv32,
                     .riscv64 => &riscv.cpu.generic_rv64,
+                    .sbf => &sbf.cpu.generic,
                     .spirv32, .spirv64 => &spirv.cpu.generic,
                     .sparc, .sparcel => &sparc.cpu.generic,
                     .sparc64 => &sparc.cpu.v9, // 64-bit SPARC needs v9 as the baseline
@@ -1719,6 +1729,7 @@ pub const Target = struct {
             .hurd,
             .driverkit,
             .shadermodel,
+            .solana,
             => return result,
         }
     }
@@ -1938,6 +1949,7 @@ pub const Target = struct {
             .aarch64_32,
             .bpfeb,
             .bpfel,
+            .sbf,
             .mips64,
             .mips64el,
             .riscv32,
@@ -2318,6 +2330,14 @@ pub const Target = struct {
                 .long, .ulong => return 64,
                 .longlong, .ulonglong, .double => return 64,
                 .longdouble => return 80,
+            },
+            .solana => switch (c_type) {
+                .char => return 8,
+                .short, .ushort => return 16,
+                .int, .uint, .float => return 32,
+                .long, .ulong => return target.ptrBitWidth(),
+                .longlong, .ulonglong, .double => return 64,
+                .longdouble => return 64,
             },
 
             .cloudabi,

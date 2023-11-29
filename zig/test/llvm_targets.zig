@@ -125,6 +125,16 @@ const targets = [_]std.zig.CrossTarget{
     .{ .cpu_arch = .x86_64, .os_tag = .windows, .abi = .msvc },
     .{ .cpu_arch = .xtensa, .os_tag = .freestanding, .abi = .none },
     .{ .cpu_arch = .xtensa, .os_tag = .linux, .abi = .none },
+    .{
+        .cpu_arch = .bpfel,
+        .os_tag = .freestanding,
+        .cpu_features_add = std.Target.bpf.featureSet(&.{.solana}),
+    },
+    .{
+        .cpu_arch = .sbf,
+        .os_tag = .solana,
+        .cpu_features_add = std.Target.sbf.featureSet(&.{.solana}),
+    },
 };
 
 pub fn addCases(ctx: *Cases, build_options: @import("cases.zig").BuildOptions) !void {

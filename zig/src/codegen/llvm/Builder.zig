@@ -6277,12 +6277,19 @@ pub fn initializeLLVMTarget(self: *const Builder, arch: std.Target.Cpu.Arch) voi
             llvm.LLVMInitializeAVRAsmPrinter();
             llvm.LLVMInitializeAVRAsmParser();
         },
-        .bpfel, .bpfeb, .sbf => {
+        .bpfel, .bpfeb => {
             llvm.LLVMInitializeBPFTarget();
             llvm.LLVMInitializeBPFTargetInfo();
             llvm.LLVMInitializeBPFTargetMC();
             llvm.LLVMInitializeBPFAsmPrinter();
             llvm.LLVMInitializeBPFAsmParser();
+        },
+        .sbf => {
+            llvm.LLVMInitializeSBFTarget();
+            llvm.LLVMInitializeSBFTargetInfo();
+            llvm.LLVMInitializeSBFTargetMC();
+            llvm.LLVMInitializeSBFAsmPrinter();
+            llvm.LLVMInitializeSBFAsmParser();
         },
         .hexagon => {
             llvm.LLVMInitializeHexagonTarget();

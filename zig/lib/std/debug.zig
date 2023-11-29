@@ -41,6 +41,7 @@ pub const sys_can_stack_trace = switch (builtin.cpu.arch) {
     // `@returnAddress()` is unsupported in LLVM 13.
     .bpfel,
     .bpfeb,
+    .sbf,
     => false,
 
     else => true,

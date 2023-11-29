@@ -51,7 +51,7 @@ pub const all_features = blk: {
     };
     result[@intFromEnum(Feature.sdiv)] = .{
         .llvm_name = "sdiv",
-        .description = "Enable native BPF_SDIV support",
+        .description = "Enable native SBF_SDIV support",
         .dependencies = featureSet(&[_]Feature{}),
     };
     result[@intFromEnum(Feature.solana)] = .{

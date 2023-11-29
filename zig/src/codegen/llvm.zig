@@ -149,6 +149,7 @@ pub fn targetTriple(allocator: Allocator, target: std.Target) ![]const u8 {
         .watchos => "watchos",
         .driverkit => "driverkit",
         .shadermodel => "shadermodel",
+        .solana => "solana",
         .opencl,
         .glsl450,
         .vulkan,
@@ -255,6 +256,7 @@ pub fn targetOs(os_tag: std.Target.Os.Tag) llvm.OSType {
         .emscripten => .Emscripten,
         .driverkit => .DriverKit,
         .shadermodel => .ShaderModel,
+        .solana => .SolanaOS,
     };
 }
 
@@ -412,7 +414,8 @@ const DataLayoutBuilder = struct {
             if (!info.force_in_data_layout and matches_default and
                 self.target.cpu.arch != .riscv64 and !(self.target.cpu.arch == .aarch64 and
                 (self.target.os.tag == .uefi or self.target.os.tag == .windows)) and
-                self.target.cpu.arch != .bpfeb and self.target.cpu.arch != .bpfel) continue;
+                self.target.cpu.arch != .bpfeb and self.target.cpu.arch != .bpfel and
+                self.target.cpu.arch != .sbf) continue;
             try writer.writeAll("-p");
             if (info.llvm != .default) try writer.print("{d}", .{@intFromEnum(info.llvm)});
             try writer.print(":{d}:{d}", .{ size, abi });
@@ -496,6 +499,7 @@ const DataLayoutBuilder = struct {
             .amdgcn,
             .bpfeb,
             .bpfel,
+            .sbf,
             .mips64,
             .mips64el,
             .powerpc64,
@@ -614,6 +618,7 @@ const DataLayoutBuilder = struct {
                     },
                     .bpfeb,
                     .bpfel,
+                    .sbf,
                     .nvptx,
                     .nvptx64,
                     .riscv64,
