@@ -387,6 +387,7 @@ set(ZIG_STAGE2_SOURCES
     lib/std/Target/powerpc.zig
     lib/std/Target/riscv.zig
     lib/std/Target/s390x.zig
+    lib/std/Target/sbf.zig
     lib/std/Target/sparc.zig
     lib/std/Target/wasm.zig
     lib/std/Target/x86.zig
