@@ -488,6 +488,7 @@ set(ZIG_STAGE2_SOURCES
     "${CMAKE_SOURCE_DIR}/lib/std/target/nvptx.zig"
     "${CMAKE_SOURCE_DIR}/lib/std/target/powerpc.zig"
     "${CMAKE_SOURCE_DIR}/lib/std/target/riscv.zig"
+    "${CMAKE_SOURCE_DIR}/lib/std/target/sbf.zig"
     "${CMAKE_SOURCE_DIR}/lib/std/target/sparc.zig"
     "${CMAKE_SOURCE_DIR}/lib/std/target/s390x.zig"
     "${CMAKE_SOURCE_DIR}/lib/std/target/wasm.zig"
