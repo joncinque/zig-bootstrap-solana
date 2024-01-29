@@ -1,0 +1,48 @@
+name: Build compiler for linux and mac
+
+on: [pull_request, push, workflow_dispatch]
+
+jobs:
+  build:
+    name: Build zig
+    runs-on: ubuntu-latest
+    timeout-minutes: 600
+    strategy:
+      matrix:
+        include:
+        - target: x86_64-linux-gnu
+        - target: aarch64-linux-gnu
+        - target: x86_64-macos-none
+        - target: aarch64-macos-none
+      fail-fast: false
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+    - name: Build
+      run: ./build ${{ matrix.target }} baseline
+      shell: bash
+    - name: Create tarball
+      run: tar -C out -cjf zig-${{ matrix.target }}.tar.bz2 zig-${{ matrix.target }}-baseline
+      shell: bash
+    - name: Upload ${{ matrix.target }} tarball
+      uses: actions/upload-artifact@v4
+      with:
+        name: zig-${{ matrix.target }}.tar.bz2
+        path: zig-${{ matrix.target }}.tar.bz2
+
+  create_release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: ${{ startsWith(github.ref, 'refs/tags/') }}
+    steps:
+    - name: Download tarballs into zig-bootstrap-solana/
+      uses: actions/download-artifact@v4
+      with:
+        merge-multiple: true
+    - name: Create GH Release
+      uses: softprops/action-gh-release@v0.1.15
+      with:
+        fail_on_unmatched_files: true
+        files: zig-*.tar.bz2
