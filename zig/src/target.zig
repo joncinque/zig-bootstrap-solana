@@ -8,7 +8,8 @@ pub const default_stack_protector_buffer_size = 4;
 
 pub fn cannotDynamicLink(target: std.Target) bool {
     return switch (target.os.tag) {
-        .freestanding, .other => true,
+        // .freestanding is used for BPF targets on Solana
+        .other => true,
         else => target.isSpirV(),
     };
 }
