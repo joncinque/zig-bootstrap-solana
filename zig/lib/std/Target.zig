@@ -118,7 +118,7 @@ pub const Os = struct {
             return switch (abi) {
                 .msvc => "",
                 else => switch (tag) {
-                    .windows, .uefi => "",
+                    .windows, .uefi, .solana => "",
                     else => "lib",
                 },
             };
