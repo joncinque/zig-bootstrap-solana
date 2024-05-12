@@ -10,10 +10,10 @@ jobs:
     strategy:
       matrix:
         include:
-        - target: x86_64-linux-gnu
-        - target: x86_64-windows-gnu
-        - target: aarch64-linux-gnu
+        - target: x86_64-linux-musl
         - target: x86_64-macos-none
+        - target: x86_64-windows-gnu
+        - target: aarch64-linux-musl
         - target: aarch64-macos-none
       fail-fast: false
     steps:
