@@ -429,7 +429,8 @@ pub fn panicExtra(
 ) noreturn {
     @setCold(true);
 
-    const size = 0x1000;
+    // limit the size of this string to avoid blowing out stack size
+    const size = if (native_os == .solana) 0x0f00 else 0x1000;
     const trunc_msg = "(msg truncated)";
     var buf: [size + trunc_msg.len]u8 = undefined;
     // a minor annoyance with this is that it will result in the NoSpaceLeft

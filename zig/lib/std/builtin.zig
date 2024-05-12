@@ -844,7 +844,7 @@ pub fn default_panic(msg: []const u8, error_return_trace: ?*StackTrace, ret_addr
             // Didn't have boot_services, just fallback to whatever.
             std.posix.abort();
         },
-        .cuda, .amdhsa => std.posix.abort(),
+        .cuda, .amdhsa, .solana => std.posix.abort(),
         .plan9 => {
             var status: [std.os.plan9.ERRMAX]u8 = undefined;
             const len = @min(msg.len, status.len - 1);
