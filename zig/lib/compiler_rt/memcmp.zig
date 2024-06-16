@@ -1,8 +1,19 @@
 const std = @import("std");
 const common = @import("./common.zig");
+const builtin = @import("builtin");
 
 comptime {
-    @export(memcmp, .{ .name = "memcmp", .linkage = common.linkage, .visibility = common.visibility });
+    if (builtin.os.tag == .solana) {
+        const Syscall = struct {
+            extern fn sol_memcmp_(vl: [*]const u8, vr: [*]const u8, n: usize) callconv(.C) c_int;
+            pub fn sol_memcmp(vl: [*]const u8, vr: [*]const u8, n: usize) callconv(.C) c_int {
+                return sol_memcmp_(vl, vr, n);
+            }
+        };
+        @export(Syscall.sol_memcmp, .{ .name = "memcmp", .linkage = common.linkage, .visibility = common.visibility });
+    } else {
+        @export(memcmp, .{ .name = "memcmp", .linkage = common.linkage, .visibility = common.visibility });
+    }
 }
 
 pub fn memcmp(vl: [*]const u8, vr: [*]const u8, n: usize) callconv(.C) c_int {

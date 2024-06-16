@@ -4,7 +4,17 @@ const builtin = @import("builtin");
 
 comptime {
     if (builtin.object_format != .c) {
-        @export(memset, .{ .name = "memset", .linkage = common.linkage, .visibility = common.visibility });
+        if (builtin.os.tag == .solana) {
+            const Syscall = struct {
+                extern fn sol_memset_(dest: ?[*]u8, c: u8, len: usize) callconv(.C) ?[*]u8;
+                pub fn sol_memset(dest: ?[*]u8, c: u8, len: usize) callconv(.C) ?[*]u8 {
+                    return sol_memset_(dest, c, len);
+                }
+            };
+            @export(Syscall.sol_memset, .{ .name = "memset", .linkage = common.linkage, .visibility = common.visibility });
+        } else {
+            @export(memset, .{ .name = "memset", .linkage = common.linkage, .visibility = common.visibility });
+        }
         @export(__memset, .{ .name = "__memset", .linkage = common.linkage, .visibility = common.visibility });
     }
 }
