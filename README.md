@@ -1,7 +1,11 @@
-# bootstrap-zig-solana
+# solana-zig-bootstrap v1.41.1
 
-This repo bootstraps the Zig compiler against the Solana fork of LLVM, which
-allows you to build Solana on-chain programs.
+This repo bootstraps the Zig compiler against v1.41 of the
+[Solana LLVM fork](https://github.com/anza-xyz/llvm-project/), which allows you
+to build Solana on-chain programs.
+
+The version on this repo follows the Solana LLVM version, with optional patch
+versions to fix any issues that come up solely in this repo.
 
 ## Getting started
 

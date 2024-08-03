@@ -45,12 +45,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+    - name: Update the version in the README
+      run: sed -i 's/# solana-zig-bootstrap v.*/# solana-zig-bootstrap v${{ inputs.version }}/' README.md
     - name: Commit and push tag
       run: |
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
-        git commit -am "Publish solana-v${{ inputs.version }}"
-        git tag -a solana-v${{ inputs.version }} -m "Tag solana-v${{ inputs.version }}"
+        git commit -am "[SOL] Publish solana-v${{ inputs.version }}"
+        git tag -a solana-v${{ inputs.version }} -m "[SOL] Tag solana-v${{ inputs.version }}"
         git push origin --follow-tags
     - name: Download tarballs into zig-bootstrap-solana/
       uses: actions/download-artifact@v4
@@ -61,3 +63,4 @@ jobs:
       with:
         fail_on_unmatched_files: true
         files: zig-*.tar.bz2
+        tag_name: solana-v${{ inputs.version }}
