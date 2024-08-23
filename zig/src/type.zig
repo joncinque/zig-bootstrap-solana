@@ -1621,6 +1621,7 @@ pub const Type = struct {
             .riscv64,
             .bpfel,
             .bpfeb,
+            .sbf,
             .nvptx,
             .nvptx64,
             => 16,
