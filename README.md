@@ -18,12 +18,24 @@ git submodule update --init --recursive
 Targets known to work:
 
 * x86_64-linux-gnu
+* x86_64-linux-musl
 * x86_64-windows-gnu
+* x86_64-windows-musl
 * x86_64-macos-none
 * aarch64-linux-gnu
+* aarch64-linux-musl
 * aarch64-macos-none
 
-The repo's original README follows:
+## Updating
+
+When updating to a new version of zig, it may be needed to update the sbf
+target file. This can be done by running:
+
+```
+zig run update_cpu_features.zig -- ../../out/build-llvm-host/bin/llvm-tablegen ../../llvm-project/ ../
+```
+
+### The repo's original README follows:
 
 # bootstrap-zig
 

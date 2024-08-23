@@ -1043,8 +1043,7 @@ pub fn main() anyerror!void {
     var zig_src_dir = try fs.cwd().openDir(zig_src_root, .{});
     defer zig_src_dir.close();
 
-    var progress = std.Progress{};
-    const root_progress = progress.start("", llvm_targets.len);
+    var root_progress = std.Progress.start(.{.estimated_total_items = llvm_targets.len });
     defer root_progress.end();
 
     if (builtin.single_threaded) {
@@ -1060,11 +1059,11 @@ pub fn main() anyerror!void {
     } else {
         var threads = try arena.alloc(std.Thread, llvm_targets.len);
         for (llvm_targets, 0..) |llvm_target, i| {
-            const job = Job{
+            const job = Job {
                 .llvm_tblgen_exe = llvm_tblgen_exe,
                 .llvm_src_root = llvm_src_root,
                 .zig_src_dir = zig_src_dir,
-                .root_progress = root_progress,
+                .root_progress = &root_progress,
                 .llvm_target = llvm_target,
             };
             threads[i] = try std.Thread.spawn(.{}, processOneTarget, .{job});
@@ -1091,11 +1090,9 @@ fn processOneTarget(job: Job) anyerror!void {
     const arena = arena_state.allocator();
 
     var progress_node = job.root_progress.start(llvm_target.zig_name, 3);
-    progress_node.activate();
     defer progress_node.end();
 
     var tblgen_progress = progress_node.start("invoke llvm-tblgen", 0);
-    tblgen_progress.activate();
 
     const child_args = [_][]const u8{
         job.llvm_tblgen_exe,
@@ -1133,7 +1130,6 @@ fn processOneTarget(job: Job) anyerror!void {
     };
 
     var json_parse_progress = progress_node.start("parse JSON", 0);
-    json_parse_progress.activate();
 
     const parsed = try json.parseFromSlice(json.Value, arena, json_text, .{});
     defer parsed.deinit();
@@ -1141,7 +1137,6 @@ fn processOneTarget(job: Job) anyerror!void {
     json_parse_progress.end();
 
     var render_progress = progress_node.start("render zig code", 0);
-    render_progress.activate();
 
     var features_table = std.StringHashMap(Feature).init(arena);
     var all_features = std.ArrayList(Feature).init(arena);

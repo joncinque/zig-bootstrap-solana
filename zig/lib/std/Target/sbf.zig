@@ -10,6 +10,7 @@ pub const Feature = enum {
     dummy,
     dwarfris,
     dynamic_frames,
+    new_call_conv,
     no_lddw,
     no_neg,
     pqr_instr,
@@ -51,6 +52,11 @@ pub const all_features = blk: {
     result[@intFromEnum(Feature.dynamic_frames)] = .{
         .llvm_name = "dynamic-frames",
         .description = "Enable dynamic frames",
+        .dependencies = featureSet(&[_]Feature{}),
+    };
+    result[@intFromEnum(Feature.new_call_conv)] = .{
+        .llvm_name = "new-call-conv",
+        .description = "Enable new call convetion for SBFv2",
         .dependencies = featureSet(&[_]Feature{}),
     };
     result[@intFromEnum(Feature.no_lddw)] = .{
@@ -102,17 +108,13 @@ pub const cpu = struct {
         .llvm_name = "generic",
         .features = featureSet(&[_]Feature{}),
     };
-    pub const probe = CpuModel{
-        .name = "probe",
-        .llvm_name = "probe",
-        .features = featureSet(&[_]Feature{}),
-    };
     pub const sbfv2 = CpuModel{
         .name = "sbfv2",
         .llvm_name = "sbfv2",
         .features = featureSet(&[_]Feature{
             .callx_reg_src,
             .dynamic_frames,
+            .new_call_conv,
             .no_lddw,
             .no_neg,
             .pqr_instr,
