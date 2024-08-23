@@ -20,7 +20,6 @@ Targets known to work:
 * x86_64-linux-gnu
 * x86_64-linux-musl
 * x86_64-windows-gnu
-* x86_64-windows-musl
 * x86_64-macos-none
 * aarch64-linux-gnu
 * aarch64-linux-musl
