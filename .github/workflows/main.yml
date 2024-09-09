@@ -29,14 +29,22 @@ jobs:
     - name: Build
       run: ./build ${{ matrix.target }} baseline
       shell: bash
-    - name: Create tarball
+    - name: Create zig tarball
       run: tar -C out -cjf zig-${{ matrix.target }}.tar.bz2 zig-${{ matrix.target }}-baseline
-      shell: bash
-    - name: Upload ${{ matrix.target }} tarball
+    - name: Upload zig tarball
       uses: actions/upload-artifact@v4
       with:
         name: zig-${{ matrix.target }}.tar.bz2
         path: zig-${{ matrix.target }}.tar.bz2
+    - name: Prep llvm dir (remove unused stuff, rename)
+      run: ./trim-llvm-release.sh ${{ matrix.target }}
+    - name: Create llvm tarball
+      run: tar -C out -cjf llvm-${{ matrix.target }}.tar.bz2 llvm-${{ matrix.target }}-baseline
+    - name: Upload llvm tarball
+      uses: actions/upload-artifact@v4
+      with:
+        name: llvm-${{ matrix.target }}.tar.bz2
+        path: llvm-${{ matrix.target }}.tar.bz2
 
   create_release:
     name: Create Release
@@ -54,7 +62,7 @@ jobs:
         git commit -am "[SOL] Publish solana-v${{ inputs.version }}"
         git tag -a solana-v${{ inputs.version }} -m "[SOL] Tag solana-v${{ inputs.version }}"
         git push origin --follow-tags
-    - name: Download tarballs into zig-bootstrap-solana/
+    - name: Download tarballs for release
       uses: actions/download-artifact@v4
       with:
         merge-multiple: true
@@ -62,5 +70,7 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         fail_on_unmatched_files: true
-        files: zig-*.tar.bz2
+        files: |
+          zig-*.tar.bz2
+          llvm-*.tar.bz2
         tag_name: solana-v${{ inputs.version }}
